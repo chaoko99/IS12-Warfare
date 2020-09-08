@@ -22,7 +22,7 @@
 /obj/item/warflare/Initialize()
 	. = ..()
 	update_icon()
-	
+
 /obj/item/warflare/update_icon() //Copied and pasted, kinda gross, but I don't really care to make all lighting objects overlay based. Maybe some other time. ~Chaoko
 	overlays = overlays.Cut()
 	if(on)
@@ -41,8 +41,6 @@
 
 /obj/item/warflare/attack_self(mob/user)
 	if(turn_on(user))
-		user.visible_message("<span class='notice'>\The [user] activates \the [src].</span>", "<span class='notice'>FFFFFFSHHSHSHSHSHSHHH</span>")
-		playsound(src.loc, activation_sound, 75, 1)
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user
 			H.throw_mode_on()
@@ -57,8 +55,10 @@
 		return FALSE
 	on = TRUE
 	update_icon()
-	
-	addtimer(CALLBACK(src, .turn_off), rand(6 MINUTE, 10 MINUTES) )
+
+	addtimer(CALLBACK(src, .turn_off), rand(10 MINUTE, 15 MINUTES) )
+	user.visible_message("<span class='notice'>\The [user] activates \the [src].</span>", "<span class='notice'>FFFFFFSHHSHSHSHSHSHHH</span>")
+	playsound(src.loc, activation_sound, 75, 1)
 	used = 1
 	return 1
 
@@ -81,3 +81,7 @@
 /obj/item/ammo_box/flares/update_icon()
 	overlays = overlays.Cut()
 	overlays += overlay_image(icon, "[flaretype]flare-[stored_handfuls.len]")
+
+/obj/item/ammo_box/flares/attack_self(mob/user)
+	var/obj/item/warflare/W = new handful_type(get_turf(src))
+	W.turn_on(user)

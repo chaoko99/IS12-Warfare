@@ -33,7 +33,7 @@
 	update_held_icon()
 
 /obj/item/torch/Process()
-	
+
 	..()
 /*	//This used to be broken, it's instead being commented out for not really needing to be used at the moment. Warfare doesn't simulate atmos.
 	var/datum/gas_mixture/air = loc.return_air()
@@ -48,7 +48,7 @@
 	//else if(!oxy_mole)
 	//	snuff()
 */
-	if(prob(1)) //Needs playtesting. This seems a little high.
+	if(prob(0.1)) //Needs playtesting. This seems a little high.
 		visible_message("A rush of wind puts out the torch.")
 		snuff()
 
@@ -60,21 +60,21 @@
 	update_icon()
 	START_PROCESSING(SSprocessing, src)
 	playsound(src, 'sound/items/torch_light.ogg', 50, 0, -1)
-	
+
 
 /obj/item/torch/proc/snuff()
 	lit = FALSE
 	update_icon()
 	STOP_PROCESSING(SSprocessing, src)
 	playsound(src, 'sound/items/torch_snuff.ogg', 50, 0, -1)
-	
+
 
 /obj/item/torch/attack_self(mob/user)
 	..()
 	if(self_lighting == 1)
 		light(user, TRUE)
 		self_lighting = -1
-		return 
+		return
 	if(lit)
 		snuff()
 
