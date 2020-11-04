@@ -4,7 +4,7 @@
 		if(staminaloss < (staminaexhaust/2))
 			adjustStaminaLoss(2)
 
-/mob/living/carbon/human/proc/attempt_dodge()//Handle parry is an object proc and it's, its own thing.
+/mob/living/carbon/human/proc/attempt_dodge(var/skip_melee)//Handle parry is an object proc and it's, its own thing.
 	var/dodge_modifier = 0
 	if(combat_mode && (defense_intent == I_DODGE) && !lying)//Todo, make use of the check_shield_arc proc to make sure you can't dodge from behind.
 		if(atk_intent == I_DEFENSE)//Better chance to dodge
@@ -12,7 +12,7 @@
 		if(statscheck(STAT_LEVEL(dex) / 2 + 3) >= SUCCESS)
 			do_dodge()
 			return	1
-		else if(prob(((SKILL_LEVEL(melee) * 10) / 2) + dodge_modifier))
+		else if(!skip_melee && prob(((SKILL_LEVEL(melee) * 10) / 2) + dodge_modifier)) //For things that wouldn't check melee skill, like stepping in a burning campfire or geting something thrown at you.
 			do_dodge()
 			return	1
 
